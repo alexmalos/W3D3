@@ -73,9 +73,9 @@ class Array
             end
         end
         if new_arr.include?(left[i])
-            new_arr << right[j]
+            new_arr += right[j..1]
         else
-            new_arr << left[i]
+            new_arr += left[i..-1]
         end
         new_arr
     end
