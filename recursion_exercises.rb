@@ -39,7 +39,7 @@ end
 
 # p exp2(2, 3)
 # p exp2(3, 3)
-require "byebug"
+
 class Array
     def deep_dup
         new_arr = []
@@ -73,12 +73,11 @@ class Array
             end
         end
         if new_arr.include?(left[i])
-            new_arr << left[i]
-        else
             new_arr << right[j]
+        else
+            new_arr << left[i]
         end
         new_arr
-        
     end
 end
 
