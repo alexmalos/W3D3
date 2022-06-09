@@ -42,40 +42,36 @@ end
 
 class Array
     def deep_dup
-        new_arr = []
-        self.each_with_index do |el, i|
-            if self[i].is_a?(Array)
-                new_arr += [self[i].deep_dup]
+        self.map do |el|
+            if el.is_a?(Array)
+                el.deep_dup
             else
-                new_arr << self[i]
+                el
             end
         end
-        new_arr
     end
 
     def merge_sort
-        
         return self if self.length <= 1
         merge((self.take(self.length / 2)).merge_sort, (self.drop(self.length / 2)).merge_sort)
     end
-
+    
     def merge(left, right)
-        
-        i, j = 0, 0
+        left_index, right_index = 0, 0
         new_arr = []
-        while new_arr.length < (right + left).length - 1
-            if left[i] < right[j]
-                new_arr << left[i]
-                i += 1 if i < left.length - 1
-            else right[j] < left[i]
-                new_arr << right[j]
-                j += 1 if j < right.length - 1
+        while left_index < left.length && right_index < right.length
+            if left[left_index] < right[right_index]
+                new_arr << left[left_index]
+                left_index += 1
+            else
+                new_arr << right[right_index]
+                right_index += 1
             end
         end
-        if new_arr.include?(left[i])
-            new_arr += right[j..1]
+        if left_index < left.length
+            new_arr += left[left_index..-1]
         else
-            new_arr += left[i..-1]
+            new_arr += right[right_index..-1]
         end
         new_arr
     end
@@ -101,11 +97,12 @@ end
 
 def bsearch(array, target)
     return nil unless array.include?(target)
-    return array.length / 2 if array[array.length / 2] == target
-    if target > array[array.length / 2]
-        array.take(array.length / 2).length + bsearch(array.drop(array.length / 2), target)
+    mid_idx = array.length / 2
+    return mid_idx if array[mid_idx] == target
+    if target > array[mid_idx]
+        array.take(mid_idx).length + bsearch(array.drop(mid_idx), target)
     else
-        bsearch(array.take(array.length / 2), target)
+        bsearch(array.take(mid_idx), target)
     end
 end
 
